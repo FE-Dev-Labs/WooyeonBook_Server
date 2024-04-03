@@ -5,6 +5,11 @@
   "repository": "https://github.com/FE-Dev-Labs/WooyeonBook_Server.git",
   "author": "FE_Wani <62400479+baesee0806@users.noreply.github.com>",
   "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.42.0",
     "axios": "^1.6.8",
