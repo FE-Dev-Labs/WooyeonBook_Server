@@ -1,18 +1,24 @@
-const express = require("express");
-const axios = require("axios");
-const cors = require("cors");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import community from "./router/community/community.js";
+import view from "./router/community/view.js";
+import list from "./router/list.js";
+import search from "./router/search.js";
 
-require("dotenv").config();
+dotenv.config();
 
 const app = express();
-const port = 8080;
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ extended: true }));
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+app.listen(process.env.PORT);
+
+app.use("/community", community);
+app.use("/view", view);
+app.use("/list", list);
+app.use("/search", search);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
