@@ -30,7 +30,7 @@ router.get("/:page", async (req, res) => {
     res.status(400).send;
   }
 });
-app.get("/community/popularList", async (req, res) => {
+router.get("/community/popularList", async (req, res) => {
   try {
     const bookReport = await supabase.from("bookReport").select("*");
     const bookMeeting = await supabase.from("bookMeeting").select("*");

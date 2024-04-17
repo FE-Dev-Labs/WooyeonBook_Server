@@ -1,10 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import community from "./router/community/community.js";
-import view from "./router/community/view.js";
-import list from "./router/list.js";
-import search from "./router/search.js";
+import community from "./src/router/community/community.js";
+import view from "./src/router/community/view.js";
+import list from "./src/router/list.js";
+import search from "./src/router/search.js";
 
 dotenv.config();
 
