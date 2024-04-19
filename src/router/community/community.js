@@ -52,7 +52,8 @@ router.put("/update/:page/:docid", async (req, res) => {
   const { data, error } = await supabase
     .from(`${req.params.page}`)
     .update(updateData)
-    .eq("doc_id", req.params.docid);
+    .eq("doc_id", req.params.docid)
+    .select();
 
   if (error) {
     return res.status(400).send(error);
