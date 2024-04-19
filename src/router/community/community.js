@@ -16,58 +16,10 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/bookReport/:docid", async (req, res) => {
+router.get("/:page", async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from("bookReport")
-      .select("*")
-      .eq("doc_id", req.params.docid);
-    if (error) {
-      throw error;
-    }
-    res.status(200).send(data[0]);
-  } catch (err) {
-    res.status(400).send;
-  }
-});
-router.get("/bookSelling/:docid", async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from("bookSelling")
-      .select("*")
-      .eq("doc_id", req.params.docid);
-    if (error) {
-      throw error;
-    }
-    res.status(200).send(data[0]);
-  } catch (err) {
-    res.status(400).send;
-  }
-});
-router.get("/bookMeeting/:docid", async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from("bookMeeting")
-      .select("*")
-      .eq("doc_id", req.params.docid);
-    if (error) {
-      throw error;
-    }
-    res.status(200).send(data[0]);
-  } catch (err) {
-    res.status(400).send;
-  }
-});
-router.get("/bookBuying/:docid", async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from("bookBuying")
-      .select("*")
-      .eq("doc_id", req.params.docid);
-    if (error) {
-      throw error;
-    }
-    res.status(200).send(data[0]);
+    const { data } = await supabase.from(`${req.params.page}`).select("*");
+    return res.status(200).send(data);
   } catch (err) {
     res.status(400).send;
   }
