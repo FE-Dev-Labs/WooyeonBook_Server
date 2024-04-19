@@ -83,5 +83,29 @@ router.get("/detail/:page/:docid", async (req, res) => {
     res.status(400).send;
   }
 });
+router.post("/create/:page", async (req, res) => {
+  const postData = req.body;
+
+  const { data, error } = await supabase
+    .from(`${req.params.page}`)
+    .insert([postData]);
+
+  if (error) {
+    return res.status(400).send(error);
+  }
+  return res.status(200).send("success");
+});
+router.put("/update/:page/:docid", async (req, res) => {
+  const updateData = req.body;
+  const { data, error } = await supabase
+    .from(`${req.params.page}`)
+    .update(updateData)
+    .eq("doc_id", req.params.docid);
+
+  if (error) {
+    return res.status(400).send(error);
+  }
+  return res.status(200).send("success");
+});
 
 export default router;
