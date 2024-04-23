@@ -5,7 +5,7 @@ import community from "./src/router/community/community.js";
 import view from "./src/router/community/view.js";
 import list from "./src/router/list.js";
 import search from "./src/router/search.js";
-
+import mypage from "./src/router/mypage.js";
 dotenv.config();
 
 const app = express();
@@ -21,6 +21,7 @@ app.use("/community", community);
 app.use("/view", view);
 app.use("/list", list);
 app.use("/search", search);
+app.use("/mypage", mypage);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

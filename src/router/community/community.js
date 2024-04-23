@@ -58,6 +58,7 @@ router.put("/update/:page/:docid", async (req, res) => {
   if (error) {
     return res.status(400).send(error);
   }
+  
   return res.status(200).send("success");
 });
 
