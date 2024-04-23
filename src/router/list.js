@@ -16,7 +16,7 @@ router.get("/search", async (req, res) => {
   try {
     // 첫번째 api
     const response = await axios.get(
-      `${process.env.SEARCH_BASE_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=1&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
+      `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=1&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
     );
     // 데이터의 item 속성만 추출
     const data = await response.data.item;
@@ -66,7 +66,7 @@ router.get("/newSpecialAll", async (req, res) => {
 
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewSpecial&MaxResults=30&start=${start}&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
+      `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewSpecial&MaxResults=30&start=${start}&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
     );
 
     // 신간리스트의 해당 카테고리 item만 추출해 data에 할당
@@ -84,7 +84,7 @@ router.get("/newAll", async (req, res) => {
   try {
     // 첫번째 api
     const response = await axios.get(
-      `${process.env.BASE_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewAll&MaxResults=24&start=1&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
+      `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewAll&MaxResults=24&start=1&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
     );
     // 데이터의 item 속성만 추출
     const data = await response.data.item;
@@ -98,7 +98,7 @@ router.get("/newAll", async (req, res) => {
     // 두 번째 요청부터 마지막 요청까지 데이터 누적
     for (let start = 2; start <= pageLength; start++) {
       const response = await axios.get(
-        `${process.env.BASE_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewAll&MaxResults=50&start=${start}&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
+        `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewAll&MaxResults=50&start=${start}&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
       );
       // for문을 순회하며 얻은 데이터
       const data = await response.data.item;
@@ -134,7 +134,7 @@ router.get("/bestAll", async (req, res) => {
   const start = Number(pageNum);
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=Bestseller&MaxResults=24&start=${start}&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
+      `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=Bestseller&MaxResults=24&start=${start}&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
     );
     // 베스트셀러 리스트의 해당 카테고리 item만 추출해 data에 할당
     const data = await response.data.item;
@@ -153,7 +153,7 @@ router.get("/usedAll", async (req, res) => {
 
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewAll&MaxResults=30&start=${start}&SearchTarget=Used&SubSearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
+      `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewAll&MaxResults=30&start=${start}&SearchTarget=Used&SubSearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
     );
 
     // 중고도서 리스트의 해당 카테고리 item만 추출해 data에 할당
@@ -171,7 +171,7 @@ router.get("/usedAll", async (req, res) => {
 router.get("/usedBest", async (req, res) => {
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=itemNewAll&MaxResults=50&start=1&SearchTarget=Used&SubSearchTarget=Book&output=js&Version=20131101&Cover=Big`
+      `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=itemNewAll&MaxResults=50&start=1&SearchTarget=Used&SubSearchTarget=Book&output=js&Version=20131101&Cover=Big`
     );
 
     // 중고도서 리스트의 item만 추출해 data에 할당
