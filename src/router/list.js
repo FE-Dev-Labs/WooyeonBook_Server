@@ -35,7 +35,15 @@ router.get("/search", async (req, res) => {
     searchAllData.forEach((item) => uniqueItemsMap.set(item.itemId, item));
     const uniqueData = Array.from(uniqueItemsMap.values());
 
-    res.status(200).send({ data: uniqueData, dataLength: uniqueData.length });
+    // 해당 카테고리의 모든 데이터 정렬
+    const sortedAllSearchData =
+      sortType === "title"
+        ? uniqueAllSearchData.sort((a, b) => a.title.localeCompare(b.title))
+        : uniqueAllSearchData.sort(
+            (a, b) =>
+              new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
+          );
+    res.status(200).send({ data: sortedAllSearchData });
   } catch (err) {
     res.status(400).send(err);
   }
