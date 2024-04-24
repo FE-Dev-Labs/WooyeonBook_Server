@@ -15,7 +15,20 @@ router.use((req, res, next) => {
   console.log("middleware for bookReports!");
   next();
 });
+router.get("/all/data", async (req, res) => {
+  try {
+    const alldata = [];
+    alldata.push(supabase.from("bookReports").select("*"));
+    alldata.push(supabase.from("bookMeetings").select("*"));
+    alldata.push(supabase.from("bookSellings").select("*"));
+    alldata.push(supabase.from("bookBuyings").select("*"));
+    const data = await Promise.all(alldata);
 
+    return res.status(200).send(data);
+  } catch (err) {
+    res.status(400).send;
+  }
+});
 router.get("/:page", async (req, res) => {
   try {
     const { data } = await supabase.from(`${req.params.page}`).select("*");
@@ -58,7 +71,7 @@ router.put("/update/:page/:docid", async (req, res) => {
   if (error) {
     return res.status(400).send(error);
   }
-  
+
   return res.status(200).send("success");
 });
 
