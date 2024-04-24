@@ -22,7 +22,7 @@ router.get("/aladin/book", async (req, res) => {
     const data = await axios.get(
       `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&SearchTarget=Book&output=js&Version=20131101&Query=${bookName}`
     );
-    res.status(200).send(data.data.itesm);
+    res.status(200).send(data.data.item);
   } catch (err) {
     res.status(400).send(err);
   }
