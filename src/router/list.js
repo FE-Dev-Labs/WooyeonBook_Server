@@ -16,7 +16,7 @@ router.get("/search", async (req, res) => {
   try {
     // 첫번째 api
     const response = await axios.get(
-      `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=1&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
+      `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=1&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
     );
     // 데이터의 item 속성만 추출
     const data = await response.data.item;
@@ -98,7 +98,7 @@ router.get("/newAll", async (req, res) => {
     // 두 번째 요청부터 마지막 요청까지 데이터 누적
     for (let start = 2; start <= pageLength; start++) {
       const response = await axios.get(
-        `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewAll&MaxResults=50&start=${start}&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
+        `${process.env.ALADIN_ITEMLIST_URL}?ttbkey=${process.env.TTB_KEY}&QueryType=ItemNewAll&MaxResults=50&start=${start}&SearchTarget=Book&CategoryId=${categoryId}&output=js&Version=20131101&Cover=Big`
       );
       // for문을 순회하며 얻은 데이터
       const data = await response.data.item;
