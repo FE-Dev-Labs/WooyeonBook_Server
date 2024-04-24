@@ -16,21 +16,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/:page", async (req, res) => {
-  const { num } = req.query;
-  const limit = 9;
-  const offset = (num - 1) * limit;
-  try {
-    const { data } = await supabase
-      .from(`${req.params.page}`)
-      .select("*")
-      .range(offset, offset + limit);
-    return res.status(200).send(data);
-  } catch (err) {
-    res.status(400).send;
-  }
-});
-router.get("/community/popularList", async (req, res) => {
+router.get("/popularList", async (req, res) => {
   try {
     const bookReport = await supabase.from("bookReport").select("*");
     const bookMeeting = await supabase.from("bookMeeting").select("*");
