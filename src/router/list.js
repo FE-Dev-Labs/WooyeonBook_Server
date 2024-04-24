@@ -10,75 +10,30 @@ router.use((req, res, next) => {
   console.log("middleware for list!");
   next();
 });
-router.get("/search", async (req, res) => {
-  const { query } = req.query;
-  try {
-    const initialResponse = await axios.get(
-      `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=1&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
-    );
-    const dataLength = initialResponse.data.totalResults;
-    const pageLength = Math.ceil(dataLength / 24);
-    const fetchPromises = [];
-
-    for (let start = 2; start <= pageLength; start++) {
-      fetchPromises.push(
-        axios.get(
-          `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=${start}&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
-        )
-      );
-    }
-
-    const responses = await Promise.all(fetchPromises);
-    const searchAllData = responses.flatMap((response) => response.data.item);
-
-    const uniqueItemsMap = new Map();
-    searchAllData.forEach((item) => uniqueItemsMap.set(item.itemId, item));
-    const uniqueData = Array.from(uniqueItemsMap.values());
-
-    // 해당 카테고리의 모든 데이터 정렬
-    const sortedAllSearchData =
-      sortType === "title"
-        ? uniqueAllSearchData.sort((a, b) => a.title.localeCompare(b.title))
-        : uniqueAllSearchData.sort(
-            (a, b) =>
-              new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
-          );
-    res.status(200).send({ data: sortedAllSearchData });
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
 // router.get("/search", async (req, res) => {
-//   const { query, sortType } = req.query;
+//   const { query } = req.query;
 //   try {
-//     // 첫번째 api
-//     const response = await axios.get(
+//     const initialResponse = await axios.get(
 //       `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=1&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
 //     );
-//     // 데이터의 item 속성만 추출
-//     const data = await response.data.item;
-//     // 해당 키워드 검색의 모든 데이터를 넣어줄 배열 (+ 첫 요청에서 가져온 30개 아이템)
-//     const allSearchData = [...data];
-//     // 해당 키워드 검색의 모든 아이템 개수
-//     const allSearchDataLength = await response.data.totalResults;
-//     // 해당 키워드 검색의 데이터 요청 수(한 번에 최대 50)
-//     const pageLength = Math.ceil(allSearchDataLength / 50);
+//     const dataLength = initialResponse.data.totalResults;
+//     const pageLength = Math.ceil(dataLength / 24);
+//     const fetchPromises = [];
 
-//     // 두 번째 요청부터 마지막 요청까지 데이터 누적
 //     for (let start = 2; start <= pageLength; start++) {
-//       const response = await axios.get(
-//         `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=50&start=${start}&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
+//       fetchPromises.push(
+//         axios.get(
+//           `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=${start}&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
+//         )
 //       );
-//       // for문을 순회하며 얻은 데이터
-//       const data = await response.data.item;
-//       // 끝까지 for문을 돌며 push
-//       allSearchData.push(...data);
 //     }
 
-//     // 중복 제거 로직 추가
+//     const responses = await Promise.all(fetchPromises);
+//     const searchAllData = responses.flatMap((response) => response.data.item);
+
 //     const uniqueItemsMap = new Map();
-//     allSearchData.forEach((item) => uniqueItemsMap.set(item.itemId, item));
-//     const uniqueAllSearchData = Array.from(uniqueItemsMap.values());
+//     searchAllData.forEach((item) => uniqueItemsMap.set(item.itemId, item));
+//     const uniqueData = Array.from(uniqueItemsMap.values());
 
 //     // 해당 카테고리의 모든 데이터 정렬
 //     const sortedAllSearchData =
@@ -88,12 +43,57 @@ router.get("/search", async (req, res) => {
 //             (a, b) =>
 //               new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
 //           );
-
 //     res.status(200).send({ data: sortedAllSearchData });
 //   } catch (err) {
 //     res.status(400).send(err);
 //   }
 // });
+router.get("/search", async (req, res) => {
+  const { query, sortType } = req.query;
+  try {
+    // 첫번째 api
+    const response = await axios.get(
+      `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=30&start=1&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
+    );
+    // 데이터의 item 속성만 추출
+    const data = await response.data.item;
+    // 해당 키워드 검색의 모든 데이터를 넣어줄 배열 (+ 첫 요청에서 가져온 30개 아이템)
+    const allSearchData = [...data];
+    // 해당 키워드 검색의 모든 아이템 개수
+    const allSearchDataLength = await response.data.totalResults;
+    // 해당 키워드 검색의 데이터 요청 수(한 번에 최대 50)
+    const pageLength = Math.ceil(allSearchDataLength / 50);
+
+    // 두 번째 요청부터 마지막 요청까지 데이터 누적
+    for (let start = 2; start <= pageLength; start++) {
+      const response = await axios.get(
+        `${process.env.ALADIN_ITEMSEARCH_URL}?ttbkey=${process.env.TTB_KEY}&Query=${query}&QueryType=Keyword&MaxResults=50&start=${start}&SearchTarget=Book&output=js&Version=20131101&Cover=Big`
+      );
+      // for문을 순회하며 얻은 데이터
+      const data = await response.data.item;
+      // 끝까지 for문을 돌며 push
+      allSearchData.push(...data);
+    }
+
+    // 중복 제거 로직 추가
+    const uniqueItemsMap = new Map();
+    allSearchData.forEach((item) => uniqueItemsMap.set(item.itemId, item));
+    const uniqueAllSearchData = Array.from(uniqueItemsMap.values());
+
+    // 해당 카테고리의 모든 데이터 정렬
+    const sortedAllSearchData =
+      sortType === "title"
+        ? uniqueAllSearchData.sort((a, b) => a.title.localeCompare(b.title))
+        : uniqueAllSearchData.sort(
+            (a, b) =>
+              new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
+          );
+
+    res.status(200).send({ data: sortedAllSearchData });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
 
 // new 페이지: 전체 신간 도서 api
 router.get("/newSpecialAll", async (req, res) => {
