@@ -31,7 +31,8 @@ router.get("/popularList", async (req, res) => {
     ];
     const sortedData = data
       .sort((a, b) => b.like_users.length - a.like_users.length)
-      .slice(0, 6);
+      .slice(0, 6)
+      .sort((a, b) => b.created_at - a.created_at);
     res.status(200).send(sortedData);
   } catch (err) {
     res.status(400).send(err);

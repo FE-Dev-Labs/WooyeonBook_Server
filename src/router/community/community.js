@@ -12,7 +12,7 @@ const supabase = createClient(
 );
 
 router.use((req, res, next) => {
-  console.log("middleware for bookReports!");
+  console.log("middleware for community!");
   next();
 });
 router.get("/all/data", async (req, res) => {
@@ -68,6 +68,21 @@ router.put("/update/:page/:docid", async (req, res) => {
     .eq("doc_id", req.params.docid)
     .select();
 
+  if (error) {
+    return res.status(400).send(error);
+  }
+
+  return res.status(200).send("success");
+});
+
+router.delete("/delete/:page", async (req, res) => {
+  const deleteData = req.body;
+
+  const { data, error } = await supabase
+    .from(`${req.params.page}`)
+    .delete()
+    .eq("doc_id", deleteData.doc_id)
+    .select();
   if (error) {
     return res.status(400).send(error);
   }

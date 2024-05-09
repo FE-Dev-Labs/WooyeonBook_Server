@@ -6,6 +6,8 @@ import view from "./src/router/community/view.js";
 import list from "./src/router/list.js";
 import search from "./src/router/search.js";
 import mypage from "./src/router/mypage.js";
+import comment from "./src/router/community/comment.js";
+
 dotenv.config();
 
 const app = express();
@@ -22,6 +24,7 @@ app.listen(process.env.PORT || 3000, () => {
 });
 
 app.use("/community", community);
+app.use("/comment", comment);
 app.use("/view", view);
 app.use("/list", list);
 app.use("/search", search);
