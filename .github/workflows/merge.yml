@@ -13,13 +13,13 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.FORKED_REPO_TOKEN }}
+          token: ${{ secrets.FORKED_SERVER_REPO_TOKEN }}
           fetch-depth: 0
           ref: main
 
       - name: Add remote-url
         run: |
-          git remote add forked-repo https://kimwonjuun:${{ secrets.FORKED_REPO_TOKEN }}@github.com/kimwonjuun/WooyeonBook_Server
+          git remote add forked-repo https://kimwonjuun:${{ secrets.FORKED_SERVER_REPO_TOKEN }}@github.com/kimwonjuun/WooyeonBook_Server
           git config user.name kimwonjuun
           git config user.email https://github.com/kimwonjuun
 
