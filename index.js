@@ -14,7 +14,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://wooyeon-book.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://wooyeon-book.vercel.app",
+      "https://www.wooyeonbook.store",
+    ],
     credentials: true,
   })
 );
